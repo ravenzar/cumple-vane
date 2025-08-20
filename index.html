@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feliz Cumpleaños Vane</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffb6c1">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #ffb6c1;
+      font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive;
+      overflow: hidden;
+    }
+
+    #gift {
+      font-size: 5rem;
+      cursor: pointer;
+      animation: bounce 1.5s infinite;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-20px); }
+      60% { transform: translateY(-10px); }
+    }
+
+    #message {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 1s ease, transform 1s ease;
+      text-align: center;
+      font-size: 1.8rem;
+      color: #5a2d0c;
+      background: #fff3e6;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-top: 20px;
+      max-width: 90%;
+      pointer-events: none;
+    }
+
+    #message.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      font-size: 2.5rem;
+      animation: rise 6s linear forwards;
+    }
+
+    @keyframes rise {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-120%); opacity: 0; }
+    }
+
+    #hint {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #4b1d1d;
+      background: rgba(255,255,255,0.6);
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="gift">🎁</div>
+  <div id="hint">🌼 Toca aquí</div>
+  <div id="message">
+    <p><strong>Feliz cumpleaños Vane!</strong><br>
+    Por estos treinta y siempre y muchos más! 🎂</p>
+    <p>Te quiere tu brother 🫶🌼<br>
+    Un abrazo grande hermanita 🎀</p>
+  </div>
+
+  <script>
+    const gift = document.getElementById('gift');
+    const message = document.getElementById('message');
+    const hint = document.getElementById('hint');
+
+    function showMessage() {
+      message.classList.add('show');
+      hint.style.display = 'none';
+
+      // Globos
+      for (let i = 0; i < 15; i++) {
+        let balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.textContent = '🎈';
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+        balloon.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 7000);
+      }
+    }
+
+    // Eventos compatibles
+    gift.addEventListener('pointerdown', showMessage, { once: true });
+    gift.addEventListener('touchend', showMessage, { once: true });
+
+    // Registrar service worker (para PWA)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
